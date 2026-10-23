@@ -1,0 +1,58 @@
+# ===== 本地运行环境（每个技能各自一套，体积大、可重建，不进版本库）=====
+# 注意：这里只写不区分大小写的目录名。hy-mt2 的 env/ 是依赖模板（源码，必须入库），
+# 千万不要写 ENV/ 之类的规则 —— Windows 下 gitignore 大小写不敏感，会连 env/ 一起误伤。
+runtime/
+.venv/
+venv/
+
+# uv / pip 缓存与构建产物
+.uv/
+*.egg-info/
+build/
+dist/
+.git-rewrite/
+
+# ===== Python 缓存 =====
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ===== 临时 / 备份 / 日志 =====
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*~
+*.swp
+*.swo
+
+# ===== 操作系统杂项 =====
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+
+# ===== 编辑器 / IDE =====
+.idea/
+.vscode/
+*.code-workspace
+
+# ===== 模型权重（默认走 HF 缓存，若曾下到仓内则忽略）=====
+models/
+*.safetensors
+*.gguf
+*.onnx
+*.pth
+*.bin
+
+# ===== triton 编译缓存（持久化到仓内以跨 WSL 重启，可重建）=====
+hy-mt2-translation/scripts/.triton_cache/
+hy-mt2-translation/scripts/cache/**
+
+# ===== WSL 运行环境（uv 建于 skill 内，可由 setup_env.py 重建）=====
+hy-mt2-translation/runtime-wsl/

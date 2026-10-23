@@ -1,0 +1,41 @@
+# ============================================================
+# 换行符策略：全仓强制 LF
+# 本仓的 TSV 契约硬要求「无 BOM、无 CRLF」（引擎技能 check_structure.py 的门禁），
+# 而 Windows 上 core.autocrlf=true 会在 checkout 时把 LF 换成 CRLF —— 必须在此覆盖。
+# eol=lf 优先级高于 core.autocrlf，保证任何机器 clone 下来工作区都是 LF。
+# ============================================================
+* text=auto eol=lf
+
+# 文本文件显式声明（给 diff / merge 用对驱动）
+*.py        text eol=lf diff=python
+*.md        text eol=lf
+*.tsv       text eol=lf
+*.toml      text eol=lf
+*.lock      text eol=lf
+*.json      text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.txt       text eol=lf
+# KAG 剧本（tyrano）按文本处理，同样锁 LF
+*.ks        text eol=lf
+
+# 游戏资源归档 / 可执行体：绝不能做换行符转换
+*.xp3   binary
+*.pck   binary
+*.g00   binary
+*.psb   binary
+*.asar  binary
+*.exe   binary
+*.dll   binary
+*.pyd   binary
+*.so    binary
+
+# Python 字节码 / 模型权重 / 图片：二进制
+*.pyc        binary
+*.safetensors binary
+*.onnx       binary
+*.gguf       binary
+*.png        binary
+*.jpg        binary
+*.ico        binary
+*.zip        binary

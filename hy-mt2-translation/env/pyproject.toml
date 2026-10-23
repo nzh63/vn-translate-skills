@@ -1,0 +1,42 @@
+[project]
+name = "hy-mt2-wsl"
+version = "0.1.0"
+description = "Hy-MT2 translation runtime on WSL2 (ROCm + PyTorch + Triton, gfx103X / RDNA2)"
+requires-python = ">=3.12"
+
+dependencies = [
+    # torch 与 triton 版本必须成对钉死：裸装会让解析器选到互相冲突的
+    # nightly 组合，解析几十分钟后失败。
+    "torch==2.12.0+rocm7.14.0a20260612",
+    "triton==3.7.0+gitb4e20bbe.rocm7.14.0a20260612",
+    "transformers>=5.6.0",
+
+    # rocm-sdk 提供 librocdxg 之外的运行时库（libhsa、libamdhip64 等），
+    # torch wheel 本体不带这些。
+    "rocm==7.14.0a20260612",
+    "rocm-sdk-core==7.14.0a20260612",
+    "rocm-sdk-libraries-gfx103X-all==7.14.0a20260612",
+]
+
+# AMD nightly 索引（gfx103X = Navi 2x 大核心全家桶，内核按 gfx1030 编译）
+[[tool.uv.index]]
+name = "amd"
+url = "https://rocm.nightlies.amd.com/v2-staging/gfx103X-all/"
+explicit = true
+
+# 其余纯 Python 依赖走国内镜像
+[[tool.uv.index]]
+name = "tencent"
+url = "http://mirrors.cloud.tencent.com/pypi/simple"
+default = true
+
+# explicit 索引必须显式指派包
+[tool.uv.sources]
+torch = { index = "amd" }
+triton = { index = "amd" }
+rocm = { index = "amd" }
+rocm-sdk-core = { index = "amd" }
+rocm-sdk-libraries-gfx103X-all = { index = "amd" }
+
+[tool.uv]
+package = false
